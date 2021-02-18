@@ -1,0 +1,407 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>PGP Presentation</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/black.css" id="theme">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+                    <h3>Everyday PGP</h3>
+                    <img src="pgp_presentation/assets/GPG_Logo.png" alt="gpg_logo.png"  width="260" height="226">
+                    <p><small>A pretty good presentation by <a href="https://blog.gallowzhumour.dev">Jake Gallow</a></small></p>
+                </section>
+                <section>
+                    <h2>Definitions</h2>
+                    <section>
+                        <b>PGP:</b> Software used for signing, (enc|dec)crypting communications (files and data) originally developed by Symantec employees and credited primarily to Phil Zimmerman.
+                        <br />
+                        <img src="pgp_presentation/assets/philzimmerman.jpg" alt="phillyz" width="200" height="286">
+                    </section>
+                    <section>
+                        <b>Open PGP:</b> The open source encryption standard (<a href="https://tools.ietf.org/html/rfc4880">RFC 4880</a>) derived from the PGP software.
+                                <br />
+                                <i>Check out the <a href="https://www.openpgp.org/">website</a></i>
+                    </section>
+                    <section>
+                        <b>GPG:</b> GNU Privacy Guard. A free implementation leveraging the PGP standard.
+                    </section>
+
+                </section>
+                <section>
+                    <section>
+                        <h3>PGP Design</h3>
+                        <img src="pgp_presentation/assets/keypair.jpg" alt="keypair" width="793" height="595">
+                    </section>
+                    <section>
+                        <img src="https://protonmail.com/blog/wp-content/uploads/2019/08/ProtonMail-How-does-pgp-work-graphic-IM-1024x512.png" alt="how pgp works">
+                    </section>
+                </section>
+                <section>
+                    <section data-auto-animate>
+                        <h2 data-id="code-title">Key Generation</h2>
+                        <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="|1-12|13-25|27-40|41-48"><script type="text/template">
+    % gpg --full-gen-key
+    gpg (GnuPG) 2.2.27; Copyright (C) 2021 Free Software Foundation, Inc.
+    This is free software: you are free to change and redistribute it.
+    There is NO WARRANTY, to the extent permitted by law.
+
+    Please select what kind of key you want:
+       (1) RSA and RSA (default)
+       (2) DSA and Elgamal
+       (3) DSA (sign only)
+       (4) RSA (sign only)
+      (14) Existing key from card
+    Your selection? 1
+
+    RSA keys may be between 1024 and 4096 bits long.
+    What keysize do you want? (3072) 4096
+    Requested keysize is 4096 bits
+    Please specify how long the key should be valid.
+             0 = key does not expire
+          <n>  = key expires in n days
+          <n>w = key expires in n weeks
+          <n>m = key expires in n months
+          <n>y = key expires in n years
+    Key is valid for? (0) 0
+    Key does not expire at all
+    Is this correct? (y/N) y
+
+    GnuPG needs to construct a user ID to identify your key.
+
+    Real name: Jimbo
+    Email address: jimbo@jimbo.web
+    Comment:
+    You selected this USER-ID:
+        "Jimbo <jimbo@jimbo.web>"
+
+    Change (N)ame, (C)omment, (E)mail or (O)kay/(Q)uit? o
+    We need to generate a lot of random bytes. It is a good idea to perform
+    some other action (type on the keyboard, move the mouse, utilize the
+    disks) during the prime generation; this gives the random number
+    generator a better chance to gain enough entropy.
+    gpg: key F72FC9B3CA121151 marked as ultimately trusted
+
+    gpg: revocation certificate stored as '/home/ragnyll/.gnupg/openpgp-revocs.d/24F2A1D7BDCC0C7648B69515F72FC9B3CA121151.rev'
+    public and secret key created and signed.
+
+    pub   rsa4096 2021-02-14 [SC]
+          24F2A1D7BDCC0C7648B69515F72FC9B3CA121151
+    uid                      Jimbo <jimbo@jimbo.web>
+    sub   rsa4096 2021-02-14 [E]
+                        </script></code></pre>
+                    </section>
+
+                    <section>
+                        <h2>What's Wrong With This?</h2>
+                        <ul>
+                            <li class="fragment">We're using 1 key for everything</li>
+                            <li class="fragment">The Key doesnt expire</li>
+                            <li class="fragment">Our computer may already be compromised</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h3>Generating Multiple Keys</h3>
+                        <img src="pgp_presentation/assets/keys.png" alt="keys.png">
+                    </section>
+                    <section>
+                        <h3>Use a Security Key</h3>
+                        <img src="pgp_presentation/assets/yubikey.png" alt="yubikey">
+                    </section>
+                    <section>
+                        <h2>Avoiding Initial Compromise</h2>
+                        <img src="pgp_presentation/assets/compromised.jpg" alt="compromised">
+                    </section>
+                </section>
+
+
+                <section>
+                    <section>
+                        <h4>Let's Encrypt some stuff</h4>
+                        <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="|1-12 |14-22|23-26"><script type="text/template">
+% gpg --encrypt file.txt
+You did not specify a user ID. (you may use "-r")
+
+Current recipients:
+
+Enter the user ID.  End with an empty line: ragnyll@gallowzhumour.dev
+gpg: checking the trustdb
+gpg: marginals needed: 3  completes needed: 1  trust model: pgp
+gpg: depth: 0  valid:   2  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 2u
+
+ % cat file.txt.gpg
+
+UdjE,5q<Ī       #w=MPc⮩!yԐx`5:]r
+                                E#ZKTp>yVwhYU!?YaW      .sݯG8&X'C␤O▮⎺
+                                                                     ┐├[≥&O*␋!£(
+D┘°▒·3␉├±M␌ɣI7!│R#>(1&ܝlP4
+C"f)Og:x`V!wL#1zx zD^9PrCf_]aSX`uf{%C@sҳsiJAiB"tR=O#mel
+↓OÅ£/┘6NTADRܺ:↓U≤:W>$9(→Ԋ#R→┘"V⎺├Z&tX↑%
+
+% gpg --decrypt file.txt.gpg
+gpg: encrypted with 4096-bit RSA key, ID public, created 2020-07-15
+      "Ragnyll (masterkey) <ragnyll@gallowzhumour.dev>"
+encrypt me
+
+                        </script></code></pre>
+                    </section>
+                    <section>
+                        <h2>DANGER!</h2>
+                        <img src="pgp_presentation/assets/malware.jpg" alt="malware">
+                    </section>
+                    <section>
+                        <h2>Some Useful Utilities</h2>
+                        <table>
+                            <tr>
+                                <td>
+                                    <ul>
+                                        <li class="fragment">email</li>
+                                        <li class="fragment"><a href="https://www.passwordstore.org/">pass</a></li>
+                                        <li class="fragment">random scripts</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <img src="pgp_presentation/assets/ranger.png" alt="ranger" class="fragment">
+                                </td>
+                            </tr>
+                        </table>
+                    </section>
+                    <section>
+                        <h2>Email</h2>
+                        <table>
+                            <tr>
+                                <td><img src="pgp_presentation/assets/protonmail.png" alt="protonmail"></td>
+                                <td><img src="pgp_presentation/assets/gmail_icon.png" alt="gmail"></td>
+                                <td><img src="pgp_presentation/assets/outlook.png" alt="gmail"></td>
+                            </tr>
+                        </table>
+                    </section>
+                    <section>
+                        <h2>Unix pass</h2>
+                            <pre data-id="code-animation" class="fade-in-then-out"><code class="hljs" data-trim data-line-numbers="|1-4|6-9|11-12|15-19"><script type="text/template">
+% pass generate FinancialPlace/email@email.com 16
+mkdir: created directory '/home/ragnyll/.password-store/FinancialPlace'
+The generated password for FinancialPlace/email@email.com is:
+;qq&xmx!.s\DUo,~
+
+% pass
+Password Store
+├── FinancialPlace
+│   └── email@email.com
+
+% pass -c FinancialPlace/email@email.com
+Copied FinancialPlace/email@email.com to clipboard. Will clear in 45 seconds.
+
+
+;qq&xmx!.s\DUo,~
+URL: *.bankofwesteros.com/*
+Username: email@email.com
+Secret Question 1: who is your childhood superhero? Spiderguy
+Phone Support PIN #: 84719
+                            </script></code></pre>
+                    </section>
+                    <section>
+                        <h2>dmenu + pass</h2>
+                        <img src="pgp_presentation/assets/suckless_pass.png" alt="demnu_pass">
+                    </section>
+                    <section>
+                        <h2>Unix Pass... on the phone</h2>
+
+                        <img src="/pgp_presentation/assets/password_store.png" alt="passphone">
+                    </section>
+                    <section>
+                        <h2>random_scripts</h2>
+                        <img src="ranger-gpg.gif" alt="ranger-gpg">
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Digital Signatures</h2>
+                        <img src="pgp_presentation/assets/quill.png" alt="quill">
+                    </section>
+                    <section>
+                        <h2>A Problem</h2>
+                            <pre data-id="code-animation" class="fade-in-then-out"><code class="hljs" data-trim data-line-numbers="|1-4|6-11|13-17|19-23"><script type="text/template">
+% git commit -m "this is a legit commit"
+[master f1418f6] this is a legit commit
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 file1.txt
+
+% git log
+commit f1418f6bb5400c1966c06a49cba1302d581b1861
+Author: ragnyll <ragnyll@gallowzhumour.dev>
+Date:   Mon Feb 15 22:17:51 2021 -0600
+
+    this is a legit commit
+
+% git commit -m "malicious commit" --author="Linus Torvalds <linus@torvalds.com>"
+[master bd04ab6] malicious commit
+ Author: Linus Torvalds <linus@torvalds.com>
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 file2.txt
+
+commit bd04ab66198b50f3c845f4b66bd9086d5d79e6ea (HEAD -> master)
+Author: Linus Torvalds <linus@torvalds.com>
+Date:   Mon Feb 15 22:22:37 2021 -0600
+
+    malicious commit
+                            </script></code></pre>
+                    </section>
+                    <section>
+                        <h2>On Github</h2>
+                        <img src="pgp_presentation/assets/scary_commits.png" alt="scary commits">
+                    </section>
+                    <section>
+                        <h2>What is signing?</h2>
+                        <img src="pgp_presentation/assets/signing.jpg" alt="signing">
+                    </section>
+                    <section>
+                        <h2>Signing Commits</h2>
+                            <pre data-id="code-animation" class="fade-in-then-out"><code class="hljs" data-trim data-line-numbers="|1-4|6-9"><script type="text/template">
+% git commit -m "signed commit" --gpg-sign={SECRET}
+[master 68161ae] signed commit
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 file3.txt
+
+% git verify-commit HEAD                                                                                 [23:31:37]
+gpg: Signature made Mon 15 Feb 2021 10:59:20 PM CST
+gpg:                using RSA key {secret}
+gpg: Good signature from "Ragnyll (masterkey) <ragnyll@gallowzhumour.dev>" [ultimate]
+                            </script></code></pre>
+                    </section>
+                    <section>
+                        <h2>On Github</h2>
+                        <img src="pgp_presentation/assets/adding_gpg_key.png" alt="signed commit">
+                    </section>
+                    <section>
+                        <h2>On Github</h2>
+                        <img src="pgp_presentation/assets/signed_commit.png" alt="signed commit">
+                    </section>
+                    <section>
+                        <h3>Signing other stuff</h3>
+                            <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="|1-2|4-7"><script type="text/template">
+% gpg --default-key {SECRET_KEY} --sign file.txt
+gpg: using "{SECRET_KEY}" as default secret key for signing
+
+% gpg --verify file.txt.gpg
+gpg: Signature made Wed 17 Feb 2021 09:03:06 PM CST
+gpg:                using RSA key {secret}
+gpg: Good signature from "Ragnyll (masterkey) <ragnyll@gallowzhumour.dev>" [ultimate]
+                            </script></code></pre>
+                    </section>
+                    <section>
+                        <h2>Package Managers</h2>
+                        <img src="pgp_presentation/assets/package_managers.png" alt="package_managers">
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>A huge assumption</h2>
+                        <img src="pgp_presentation/assets/hacker.jpg" alt="hacker">
+                    </section>
+                    <section>
+                        <h2>Web of Trust</h2>
+                        <img src="pgp_presentation/assets/weboftrust.png" alt="weboftrust">
+                    </section>
+                    <section>
+                        <h2>Sharing Keys</h2>
+                        <a href="http://hkps.pool.sks-keyservers.net/pks/lookup?search=ragnyll%40gallowzhumour.dev&fingerprint=on&op=index"><img src="pgp_presentation/assets/keyserver.png" alt="keyserver"></a>
+                    </section>
+                    <section>
+                        <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers="|1-9|10-17|19-22|24-33"><script type="text/template">
+% gpg --default-key {secret} --sign-key DC43F08854D9F0842A8C094CD86E49716FEAF8EB
+
+sec  rsa2048/D86E49716FEAF8EB
+     created: 2021-02-18  expires: never       usage: SC
+     trust: ultimate      validity: ultimate
+ssb  rsa2048/79D861AB5F6B0F22
+     created: 2021-02-18  expires: never       usage: E
+[ultimate] (1). Jimbo <Jimbo@Jimbo.com>
+
+gpg: using "{SECRET}" as default secret key for signing
+
+sec  rsa2048/D86E49716FEAF8EB
+     created: 2021-02-18  expires: never       usage: SC
+     trust: ultimate      validity: ultimate
+ Primary key fingerprint: DC43 F088 54D9 F084 2A8C  094C D86E 4971 6FEA F8EB
+
+     Jimbo <Jimbo@Jimbo.com>
+
+Are you sure that you want to sign this key with your
+key "Ragnyll (masterkey) <ragnyll@gallowzhumour.dev>" ({secret})
+
+Really sign? (y/N) y
+
+% gpg --check-sigs DC43F08854D9F0842A8C094CD86E49716FEAF8EB
+pub   rsa2048 2021-02-18 [SC]
+      DC43F08854D9F0842A8C094CD86E49716FEAF8EB
+uid           [ultimate] Jimbo <Jimbo@Jimbo.com>
+sig!3        D86E49716FEAF8EB 2021-02-18  Jimbo <Jimbo@Jimbo.com>
+sig!         {secret} 2021-02-18  Ragnyll (masterkey) <ragnyll@gallowzhumour.dev>
+sub   rsa2048 2021-02-18 [E]
+sig!         D86E49716FEAF8EB 2021-02-18  Jimbo <Jimbo@Jimbo.com>
+
+gpg: 3 good signatures
+                        </script></code></pre>
+                    </section>
+                </section>
+
+                <section>
+                    <h2>The Best Resources</h2>
+                    <ul>
+                        <li><a href="https://youtu.be/Lq-yKJFHJpk">A Pretty Good Introduction to Pretty Good Privacy - Thoughtbot</a></li>
+                        <li><a href="https://youtu.be/1vVIpIvboSg">Creating and Managing a GPG Key Pair - Nick Janetakis</a></li>
+                        <li><a href="https://github.com/drduh/YubiKey-Guide">Dr. Duh YubiKey Guide</a></li>
+                    </ul>
+                </section>
+
+                <section>
+                    <section>
+                        <p>Side note... I Used</p>
+                        <a href="https://revealjs.com">
+                            <img src="https://static.slid.es/reveal/logo-v1/reveal-white-text.svg" alt="reveal.js logo" style="height: 180px; margin: 0 auto 4rem auto; background: transparent;" class="demo-logo">
+                        </a>
+                        <p>
+                            <a href="https://gitlab.com/Ragnyll/tech_talks/">Presentation Code</a>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>Presentation Code (again)</h2>
+                        <img src="pgp_presentation/assets/qr_code.png" alt="qr">
+                    </section>
+                </section>
+
+
+                <section data-markdown="pgp_presentation/sources.md"
+                          data-separator="^\n\n\n"
+                          data-separator-vertical="^\n\n"
+                          data-charset="iso-8859-15">
+                </section>
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			Reveal.initialize({
+				hash: true,
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>

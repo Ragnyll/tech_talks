@@ -1,0 +1,12 @@
+## Sources
+* https://protonmail.com/blog/what-is-pgp-encryption/
+* https://www.gnupg.org/gph/en/manual/x457.html
+* https://en.wikipedia.org/wiki/Pretty_Good_Privacy#OpenPGP
+* https://en.wikipedia.org/wiki/GNU_Privacy_Guard
+* https://en.wikipedia.org/wiki/Web_of_trust
+* https://protonmail.com/blog/pgp-efail-statement/
+* https://youtu.be/Lq-yKJFHJpk
+* https://www.pandasecurity.com/en/mediacenter/panda-security/how-to-encrypt-email/
+* https://wiki.archlinux.org/index.php/Pacman/Package_signing
+* https://www.geeksforgeeks.org/pgp-authentication-and-confidentiality/
+* https://github.com/drduh/YubiKey-Guide
