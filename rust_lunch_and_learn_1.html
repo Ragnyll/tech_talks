@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Rust Lunch and Learn 1</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/black.css" id="theme">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+                    <h3>Rust L&L 1</h3>
+                    <h4>Humble Beginnings</h4>
+                    <img src="rust_lunch_and_learn_1/assets/ferris.png" alt="ferris">
+                    <p><small>A presentation by <a href="https://blog.gallowzhumour.dev">Jake Gallow</a></small></p>
+                </section>
+                <section>
+                    <section>
+                        <h3>What is Rust</h3>
+                        <p>Rust is a multi-paradigm, high-level, general-purpose programming language designed for performance and safety, especially safe concurrency.</p>
+                        <img src="rust_lunch_and_learn_1/assets/rust_logo.png" alt="rust title">
+                    </section>
+                    <section>
+                        <h3>Why do I like Rust?</h3>
+                        <ul>
+                            <li>Lots of tools in the ecosystem to build things</li>
+                            <li>The compiler is great</li>
+                            <li>It doesnt let me be stupid</li>
+                            <li>It's really fast and it looks really cool without being C++</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>What can I make with Rust?</h3>
+                        <ul>
+                            <li>Alacritty</li>
+                            <li>Bottom</li>
+                            <li>RTodo</li>
+                            <li>Web Servers</li>
+                            <li>ANYTHING</li>
+                        </ul>
+                    </section>
+                </section>
+                <section>
+                    <h3>Let's write some Rust</h3>
+                </section>
+                <section>
+                    <h3>Where to learn more</h3>
+                    <ul>
+                        <li><a href="https://doc.rust-lang.org/stable/book/">The Rust Book</a></li>
+                        <li><a href="https://www.youtube.com/channel/UCaYhcUwRBNscFNUKTjgPFiA">Rust Youtube Channel</a></li>
+                        <li><a href="https://discord.gg/fJkFcVxZ">Rust Discord Server</a></li>
+                    </ul>
+                </section>
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			Reveal.initialize({
+				hash: true,
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
