@@ -7,3 +7,10 @@
 
 # Starting to work on the language
 ## Starting a project
+variable typing
+- types
+- mutability rules
+- function
+- control flow
+- Result and Error with match
+- basic structs with impl
